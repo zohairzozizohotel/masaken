@@ -215,6 +215,8 @@ import {
                 {project.name}
               </h1>
               
+              <div className="w-24 h-1 bg-accent rounded-full mb-6" /> 
+
               <div className="flex flex-wrap items-center gap-6 text-white/90 text-lg">
                 <div className="flex items-center gap-2">
                   <MapPin className="text-accent" size={20} />
@@ -239,7 +241,7 @@ import {
           <div className="lg:col-span-2 space-y-12">
             
             {/* Tabs Navigation */}
-            <div className="flex items-center gap-1 p-1 bg-white rounded-2xl shadow-sm border border-border-light overflow-x-auto">
+            <div className="flex items-center gap-1 p-1 bg-white rounded-2xl border border-gray-100 overflow-x-auto">
               {[
                 { id: 'overview', label: 'نظرة عامة', icon: FileText },
                 { id: 'sections', label: 'أقسام المشروع', icon: LayoutGrid },
@@ -250,10 +252,10 @@ import {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-6 py-3 rounded-xl transition-all duration-300 whitespace-nowrap ${
+                  className={`flex items-center gap-2 px-6 py-3 rounded-xl transition-all duration-300 whitespace-nowrap tracking-wide text-sm ${
                     activeTab === tab.id 
-                      ? 'bg-primary text-white shadow-lg' 
-                      : 'text-secondary-text hover:bg-gray-50'
+                      ? 'bg-primary text-white shadow-md' 
+                      : 'text-secondary-text bg-transparent hover:bg-gray-50'
                   }`}
                 >
                   <tab.icon size={18} />
@@ -280,7 +282,7 @@ import {
                         <span className="w-10 h-1 bg-accent rounded-full" />
                         عن المشروع
                       </h3>
-                      <div className="prose prose-lg text-secondary-text leading-loose">
+                      <div className="prose prose-lg text-secondary-text leading-loose max-w-none first-letter:text-4xl first-letter:font-bold first-letter:text-primary">
                         {project.description ? (
                           <p>{project.description}</p>
                         ) : (
@@ -291,14 +293,14 @@ import {
 
                     {/* Features Grid (Example features - can be dynamic later) */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="bg-white p-6 rounded-2xl shadow-sm border border-border-light hover:border-accent/30 transition-colors">
+                      <div className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md border border-transparent transition-all duration-300">
                         <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center text-accent mb-4">
                           <CheckCircle2 size={24} />
                         </div>
                         <h4 className="text-lg font-bold text-primary mb-2">تصاميم عصرية</h4>
                         <p className="text-secondary-text text-sm">تصاميم معمارية فريدة تجمع بين الأصالة والحداثة.</p>
                       </div>
-                      <div className="bg-white p-6 rounded-2xl shadow-sm border border-border-light hover:border-accent/30 transition-colors">
+                      <div className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md border border-transparent transition-all duration-300">
                         <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center text-accent mb-4">
                           <CheckCircle2 size={24} />
                         </div>
@@ -335,7 +337,8 @@ import {
                             )}
                           </div>
                           <div className="flex-1 flex flex-col justify-center">
-                            <h3 className="text-2xl font-bold text-primary mb-4">{section.name}</h3>
+                            <h3 className="text-3xl font-bold tracking-tight text-primary mb-4">{section.name}</h3>
+                            <div className="w-16 h-1 bg-accent rounded-full mb-4" />
                             <p className="text-secondary-text leading-relaxed mb-6">
                               {section.description || 'لا يوجد وصف لهذا القسم.'}
                             </p>
@@ -422,16 +425,16 @@ import {
                             <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-primary shadow-sm">
                               {unit.status === 'available' ? 'متاح' : 'مباع'}
                             </div>
+                            {unit.price && (
+                                <div className="absolute top-3 left-3 bg-accent text-white px-4 py-1 rounded-full text-sm font-bold shadow-sm">
+                                    {unit.price.toLocaleString()} ر.س
+                                </div>
+                            )}
                           </div>
                           <div className="flex-1 flex flex-col justify-between py-2">
                             <div>
                               <div className="flex justify-between items-start mb-2">
                                 <h4 className="text-xl font-bold text-primary">{unit.type} {unit.unit_number && `- ${unit.unit_number}`}</h4>
-                                {unit.price && (
-                                  <span className="text-accent font-bold text-lg">
-                                    {unit.price.toLocaleString()} ر.س
-                                  </span>
-                                )}
                               </div>
                               <p className="text-secondary-text text-sm mb-4 line-clamp-2">
                                 {unit.model_details || 'نموذج سكني فاخر يتميز بتصميم عصري وتشطيبات عالية الجودة.'}
@@ -613,17 +616,35 @@ import {
               >
                 احجز موعد الآن
               </a>
+
+              <div className="text-xs text-gray-400 mt-6 text-center space-y-2">
+                <p className="flex items-center justify-center gap-1">
+                    <CheckCircle2 size={12} className="text-green-500" />
+                    <span>مرخص من وزارة الشؤون البلدية</span>
+                </p>
+                <p className="flex items-center justify-center gap-1">
+                    <CheckCircle2 size={12} className="text-green-500" />
+                    <span>مشاريع موثوقة</span>
+                </p>
+                <p className="flex items-center justify-center gap-1">
+                    <CheckCircle2 size={12} className="text-green-500" />
+                    <span>خبرة أكثر من 10 سنوات</span>
+                </p>
+              </div>
             </div>
 
             {/* Google Map Embed */}
             <div className="bg-white p-2 rounded-3xl shadow-sm border border-border-light h-[300px] overflow-hidden relative group">
-              <iframe 
-                src={getMapEmbedUrl(project.link, project.location)} 
-                className="w-full h-full rounded-2xl" 
-                loading="lazy" 
-                referrerPolicy="no-referrer-when-downgrade"
-                allowFullScreen
-              />
+              <div className="w-full h-full rounded-2xl overflow-hidden relative group-hover:scale-[1.02] transition-transform duration-500">
+                <iframe 
+                    src={getMapEmbedUrl(project.link, project.location)} 
+                    className="w-full h-full" 
+                    loading="lazy" 
+                    referrerPolicy="no-referrer-when-downgrade"
+                    allowFullScreen
+                />
+                <div className="absolute inset-0 bg-black/5 pointer-events-none group-hover:bg-transparent transition-colors duration-300" />
+              </div>
               
               <div className="absolute bottom-4 left-4 z-10">
                 <a 
