@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #1b1b1b;
+  --color-background: #f9f9f9;
+  --color-secondary-text: #555555;
+  --color-border-light: rgba(0,0,0,0.08);
+  --color-accent: #277a8a;
+  
+  --font-ibm-plex: var(--font-ibm-plex);
+}
+
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-primary);
+    font-family: var(--font-ibm-plex), sans-serif;
+  }
+}
+
+@utility container-custom {
+  margin-inline: auto;
+  padding-inline: 24px;
+  max-width: 1320px;
+  @media (width >= 640px) {
+    padding-inline: 64px;
+  }
+}
