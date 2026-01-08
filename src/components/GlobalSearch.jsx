@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
-import { Search, X, Loader2, Building2, Home } from 'lucide-react';
+import { Search, X, Loader2, Building2, Home, ArrowRight } from 'lucide-react';
 import { supabase } from '@/lib/supabaseClient';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -23,7 +23,7 @@ export default function GlobalSearch({ isOpen, onClose }) {
   // Handle Search
   useEffect(() => {
     const delayDebounceFn = setTimeout(async () => {
-      if (searchTerm.trim().length < 2) {
+      if (searchTerm.trim().length < 1) {
         setResults({ projects: [], units: [] });
         return;
       }
@@ -97,39 +97,39 @@ export default function GlobalSearch({ isOpen, onClose }) {
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex flex-col">
+        <div className="fixed inset-0 z-[9999] flex items-start justify-center pt-20 px-4">
           {/* Backdrop */}
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             onClick={handleClose}
           />
           
-          {/* Search Container */}
+          {/* Search Dropdown Container */}
           <motion.div 
-            initial={{ y: -50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -50, opacity: 0 }}
+            initial={{ y: -20, opacity: 0, scale: 0.95 }}
+            animate={{ y: 0, opacity: 1, scale: 1 }}
+            exit={{ y: -20, opacity: 0, scale: 0.95 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="relative w-full bg-white shadow-xl border-b border-gray-100 overflow-hidden flex flex-col max-h-[80vh]"
+            className="relative w-full max-w-3xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[70vh]"
           >
             {/* Header / Input Area */}
-            <div className="container-custom mx-auto py-6">
-                <div className="relative flex items-center gap-4">
-                    <Search className="text-gray-400 w-6 h-6 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <div className="p-4 border-b border-gray-100">
+                <div className="relative flex items-center gap-3">
+                    <Search className="text-gray-400 w-5 h-5 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                     <input
                         ref={inputRef}
                         type="text"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        placeholder="ابحث عن مشروع، وحدة، حي، أو تفاصيل..."
-                        className="w-full bg-gray-50 border-none rounded-2xl py-4 pr-14 pl-12 text-lg text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-primary/20 transition-all"
+                        placeholder="ابحث عن مشروع، وحدة، حي..."
+                        className="w-full bg-gray-50 border-none rounded-xl py-3 pr-12 pl-12 text-base text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-primary/20 transition-all"
                     />
                     <button 
                         onClick={handleClose}
-                        className="p-2 bg-gray-100 hover:bg-gray-200 rounded-full text-gray-500 transition-colors"
+                        className="p-2 hover:bg-gray-100 rounded-lg text-gray-400 hover:text-gray-600 transition-colors"
                     >
                         <X size={20} />
                     </button>
@@ -137,41 +137,42 @@ export default function GlobalSearch({ isOpen, onClose }) {
             </div>
 
             {/* Results Area */}
-            <div className="flex-1 overflow-y-auto bg-gray-50/50">
-                <div className="container-custom mx-auto py-6 pb-12">
+            <div className="flex-1 overflow-y-auto bg-white custom-scrollbar">
+                <div className="p-4">
                     {loading ? (
-                        <div className="flex items-center justify-center py-12 text-gray-400">
-                            <Loader2 className="w-8 h-8 animate-spin" />
-                            <span className="mr-3">جاري البحث...</span>
+                        <div className="flex items-center justify-center py-8 text-gray-400">
+                            <Loader2 className="w-6 h-6 animate-spin" />
+                            <span className="mr-3 text-sm">جاري البحث...</span>
                         </div>
                     ) : (
-                        searchTerm.length > 1 && (
-                            <div className="space-y-8">
+                        searchTerm.length > 0 ? (
+                            <div className="space-y-6">
                                 {/* Projects Results */}
                                 {results.projects.length > 0 && (
-                                    <div className="space-y-4">
-                                        <h3 className="text-sm font-bold text-gray-500 px-2 flex items-center gap-2">
-                                            <Building2 size={16} />
+                                    <div className="space-y-3">
+                                        <h3 className="text-xs font-bold text-gray-500 px-2 flex items-center gap-2">
+                                            <Building2 size={14} />
                                             المشاريع
                                         </h3>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                        <div className="grid grid-cols-1 gap-2">
                                             {results.projects.map(project => (
                                                 <div 
                                                     key={project.id}
                                                     onClick={() => handleNavigate(`/projects/${project.id}`)}
-                                                    className="bg-white p-3 rounded-xl border border-gray-100 hover:border-primary/30 hover:shadow-md cursor-pointer transition-all flex gap-4 items-center group"
+                                                    className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors group"
                                                 >
-                                                    <div className="w-16 h-16 rounded-lg bg-gray-100 overflow-hidden flex-shrink-0">
+                                                    <div className="w-12 h-12 rounded-lg bg-gray-100 overflow-hidden flex-shrink-0 border border-gray-100">
                                                         <img 
                                                             src={project.main_image || '/images/placeholder.jpg'} 
                                                             alt={project.name} 
-                                                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                                            className="w-full h-full object-cover"
                                                         />
                                                     </div>
-                                                    <div>
-                                                        <h4 className="font-bold text-gray-900 group-hover:text-primary transition-colors">{project.name}</h4>
-                                                        <p className="text-xs text-gray-500 truncate mt-1">{project.location}</p>
+                                                    <div className="flex-1 min-w-0">
+                                                        <h4 className="font-bold text-sm text-gray-900 group-hover:text-primary truncate">{project.name}</h4>
+                                                        <p className="text-xs text-gray-500 truncate">{project.location}</p>
                                                     </div>
+                                                    <ArrowRight size={16} className="text-gray-300 group-hover:text-primary -translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all" />
                                                 </div>
                                             ))}
                                         </div>
@@ -180,29 +181,27 @@ export default function GlobalSearch({ isOpen, onClose }) {
 
                                 {/* Units Results */}
                                 {results.units.length > 0 && (
-                                    <div className="space-y-4">
-                                        <h3 className="text-sm font-bold text-gray-500 px-2 flex items-center gap-2">
-                                            <Home size={16} />
+                                    <div className="space-y-3">
+                                        <h3 className="text-xs font-bold text-gray-500 px-2 flex items-center gap-2">
+                                            <Home size={14} />
                                             الوحدات
                                         </h3>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div className="grid grid-cols-1 gap-2">
                                             {results.units.map(unit => (
                                                 <div 
                                                     key={unit.id}
                                                     onClick={() => handleNavigate(`/projects/${unit.project_id}`)}
-                                                    className="bg-white p-4 rounded-xl border border-gray-100 hover:border-accent/30 hover:shadow-md cursor-pointer transition-all group"
+                                                    className="flex items-center justify-between p-3 rounded-lg border border-gray-100 hover:border-accent/30 hover:shadow-sm cursor-pointer transition-all bg-white group"
                                                 >
-                                                    <div className="flex justify-between items-start">
-                                                        <div>
-                                                            <h4 className="font-bold text-gray-900 group-hover:text-accent transition-colors">{unit.type}</h4>
-                                                            <p className="text-xs text-gray-500 mt-1">مشروع: {unit.project_name}</p>
-                                                        </div>
-                                                        {unit.size && (
-                                                            <span className="text-xs bg-gray-50 text-gray-600 px-2 py-1 rounded-md">
-                                                                {unit.size} م²
-                                                            </span>
-                                                        )}
+                                                    <div>
+                                                        <h4 className="font-bold text-sm text-gray-900 group-hover:text-accent transition-colors">{unit.type}</h4>
+                                                        <p className="text-xs text-gray-500 mt-0.5">مشروع: {unit.project_name}</p>
                                                     </div>
+                                                    {unit.size && (
+                                                        <span className="text-xs bg-gray-50 text-gray-600 px-2 py-1 rounded-md border border-gray-100">
+                                                            {unit.size} م²
+                                                        </span>
+                                                    )}
                                                 </div>
                                             ))}
                                         </div>
@@ -211,19 +210,16 @@ export default function GlobalSearch({ isOpen, onClose }) {
 
                                 {/* No Results */}
                                 {results.projects.length === 0 && results.units.length === 0 && (
-                                    <div className="text-center py-12 text-gray-400">
-                                        <Search className="w-12 h-12 mx-auto mb-4 opacity-20" />
-                                        <p>لا توجد نتائج مطابقة لـ "{searchTerm}"</p>
+                                    <div className="text-center py-8 text-gray-400">
+                                        <p className="text-sm">لا توجد نتائج مطابقة لـ "{searchTerm}"</p>
                                     </div>
                                 )}
                             </div>
+                        ) : (
+                            <div className="text-center py-12 text-gray-400 text-sm opacity-60">
+                                ابدأ الكتابة للبحث...
+                            </div>
                         )
-                    )}
-                    
-                    {!searchTerm && (
-                        <div className="text-center py-12 text-gray-400 text-sm">
-                            ابدأ الكتابة للبحث عن مشاريع، وحدات سكنية، أو أحياء...
-                        </div>
                     )}
                 </div>
             </div>
