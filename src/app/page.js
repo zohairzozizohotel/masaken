@@ -22,6 +22,65 @@ export default function Home() {
       <Timeline />
       <Contact />
       
+      {/* Company Location Map Section */}
+      <section className="py-20 bg-white relative overflow-hidden">
+        <div className="container-custom">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
+              موقعنا على الخريطة
+            </h2>
+            <div className="w-24 h-1 bg-accent mx-auto rounded-full mb-6" />
+            <p className="text-secondary-text max-w-2xl mx-auto">
+              تفضل بزيارتنا في مقر الشركة. نحن بانتظارك لتقديم أفضل الخدمات العقارية.
+            </p>
+          </div>
+
+          <div className="relative w-full h-[450px] rounded-3xl overflow-hidden shadow-2xl border border-gray-100 group">
+            {/* Faded Edges Mask */}
+            <div className="absolute inset-0 pointer-events-none z-10" 
+                 style={{
+                   background: 'radial-gradient(circle, transparent 50%, rgba(255,255,255,0.0) 100%)',
+                   boxShadow: 'inset 0 0 60px 30px rgba(255,255,255,1)'
+                 }}
+            />
+            
+            <iframe 
+              src="https://maps.google.com/maps?q=إدارة+شركة+مساكن+الرفاهية+للمقاولات+العامة&t=&z=13&ie=UTF8&iwloc=&output=embed"
+              width="100%" 
+              height="100%" 
+              style={{ border: 0 }} 
+              allowFullScreen="" 
+              loading="lazy" 
+              referrerPolicy="no-referrer-when-downgrade"
+              className="w-full h-full filter grayscale-[20%] group-hover:grayscale-0 transition-all duration-700"
+              title="موقع شركة مساكن الرفاهية"
+            ></iframe>
+
+            {/* Overlay Title Card */}
+            <div className="absolute bottom-6 right-6 bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-lg max-w-xs z-20 border border-white/50 hidden md:block transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 bg-accent/10 rounded-full flex items-center justify-center text-accent">
+                  <MapPin size={20} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-primary">مقر الشركة</h4>
+                  <p className="text-xs text-secondary-text">حي النزهة، جدة</p>
+                </div>
+              </div>
+              <a 
+                href="https://maps.app.goo.gl/pVDXxh6RvbsfU6QY7" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-sm text-accent hover:underline flex items-center gap-1 mt-2 font-medium"
+              >
+                عرض في خرائط جوجل
+                <ArrowRight size={14} />
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <footer className="bg-[#111] text-white pt-20 pb-10 border-t border-gray-800">
         <div className="container-custom">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
