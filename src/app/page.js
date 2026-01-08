@@ -39,8 +39,7 @@ export default function Home() {
             {/* Faded Edges Mask */}
             <div className="absolute inset-0 pointer-events-none z-10" 
                  style={{
-                   background: 'radial-gradient(circle, transparent 50%, rgba(255,255,255,0.0) 100%)',
-                   boxShadow: 'inset 0 0 60px 30px rgba(255,255,255,1)'
+                   boxShadow: 'inset 0 0 150px 100px rgba(255,255,255,1)'
                  }}
             />
             
