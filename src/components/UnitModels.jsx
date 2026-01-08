@@ -32,7 +32,10 @@ export default function UnitModels() {
   }, []);
 
   useEffect(() => {
-    fetchUnits();
+    const t = setTimeout(() => {
+      fetchUnits();
+    }, 0);
+    return () => clearTimeout(t);
   }, [fetchUnits]);
 
   return (

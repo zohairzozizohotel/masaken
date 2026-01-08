@@ -188,7 +188,13 @@ import {
 
   return (
     <main className="min-h-screen bg-[#f9f9f9]">
-      <Header />
+      <Header
+        breadcrumb={[
+          { label: 'الرئيسية', href: '/' },
+          { label: 'المشاريع', href: '/#projects' },
+          { label: project?.name || `مشروع ${id}`, href: `/projects/${id}` }
+        ]}
+      />
       {/* Hero Section */}
       <div className="relative h-[60vh] min-h-[500px] w-full overflow-hidden">
         <div className="absolute inset-0 bg-gray-900">

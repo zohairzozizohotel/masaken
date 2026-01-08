@@ -2,7 +2,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Search, X, Loader2, Building2, Home, ArrowRight } from 'lucide-react';
 import { supabase } from '@/lib/supabaseClient';
-import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 
@@ -30,17 +29,13 @@ export default function GlobalSearch({ isOpen, onClose }) {
 
       setLoading(true);
       try {
-        console.log('Searching for:', searchTerm); // Debug Log
-
         // Search Projects
         const { data: projectsData, error: projectsError } = await supabase
           .from('projects')
           .select('id, name, location, main_image, description')
           .or(`name.ilike.%${searchTerm}%,location.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`)
           .limit(5);
-
-        if (projectsError) console.error('Projects Search Error:', projectsError);
-        else console.log('Projects Found:', projectsData?.length);
+        if (projectsError) throw projectsError;
 
         // Search Units (and join with projects to get project name)
         // Corrected table name from 'project_units' to 'units'
@@ -49,9 +44,7 @@ export default function GlobalSearch({ isOpen, onClose }) {
           .select('id, type, project_id, size, model_details')
           .or(`type.ilike.%${searchTerm}%,model_details.ilike.%${searchTerm}%`)
           .limit(5);
-
-        if (unitsError) console.error('Units Search Error:', unitsError);
-        else console.log('Units Found:', unitsData?.length);
+        if (unitsError) throw unitsError;
         
         // Fetch project names for units if needed
         let unitsWithProjects = [];
@@ -211,7 +204,7 @@ export default function GlobalSearch({ isOpen, onClose }) {
                                 {/* No Results */}
                                 {results.projects.length === 0 && results.units.length === 0 && (
                                     <div className="text-center py-8 text-gray-400">
-                                        <p className="text-sm">لا توجد نتائج مطابقة لـ "{searchTerm}"</p>
+                                        <p className="text-sm">لا توجد نتائج مطابقة لـ «{searchTerm}»</p>
                                     </div>
                                 )}
                             </div>
