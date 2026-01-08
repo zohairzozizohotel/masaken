@@ -27,10 +27,11 @@ import {
  export default function ProjectDetails() {
    const { id } = useParams();
    const [project, setProject] = useState(null);
-   const [units, setUnits] = useState([]);
-   const [files, setFiles] = useState([]);
-   const [sections, setSections] = useState([]);
-   const [loading, setLoading] = useState(true);
+  const [units, setUnits] = useState([]);
+  const [files, setFiles] = useState([]);
+  const [galleryImages, setGalleryImages] = useState([]);
+  const [sections, setSections] = useState([]);
+  const [loading, setLoading] = useState(true);
    const [activeTab, setActiveTab] = useState('overview');
    const [activeSection, setActiveSection] = useState(null);
    const [selectedUnit, setSelectedUnit] = useState(null);
@@ -61,7 +62,15 @@ import {
 
         if (unitsData) setUnits(unitsData);
 
-        // Fetch Files (Images & Docs)
+        // Fetch Gallery Images
+        const { data: galleryData } = await supabase
+          .from('project_images')
+          .select('*')
+          .eq('project_id', id);
+          
+        if (galleryData) setGalleryImages(galleryData);
+
+        // Fetch Files (Docs)
         const { data: filesData, error: filesError } = await supabase
           .from('project_files')
           .select('*')
@@ -96,22 +105,20 @@ import {
     fetchData();
   }, [id]);
 
-  // Filter files logic updated to be more robust
-  const isImage = (file) => {
-    const type = file.type?.toLowerCase() || '';
-    const url = file.file_url?.toLowerCase() || '';
-    return (
-      ['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg', 'bmp', 'tiff'].includes(type) || 
-      type.startsWith('image/') ||
-      url.match(/\.(jpg|jpeg|png|webp|gif|svg|bmp|tiff)(\?.*)?$/i)
-    );
-  };
-
-  const images = files.filter(f => isImage(f));
-  const documents = files.filter(f => !isImage(f));
+  // Documents only from project_files
+  const documents = files; 
 
   // Combine main image with gallery images for the gallery view
-  const allImages = project?.main_image ? [{ id: 'main', file_url: project.main_image, name: 'Main Image' }, ...images] : images;
+  // Map galleryImages to match the structure needed (file_url is image_url in DB)
+  const mappedGalleryImages = galleryImages.map(img => ({
+    id: img.id,
+    file_url: img.image_url,
+    name: img.type === 'interior' ? 'صورة داخلية' : (img.type === 'exterior' ? 'صورة خارجية' : 'صورة')
+  }));
+
+  const allImages = project?.main_image 
+    ? [{ id: 'main', file_url: project.main_image, name: 'الواجهة الرئيسية' }, ...mappedGalleryImages] 
+    : mappedGalleryImages;
 
   // Keyboard Navigation for Lightbox
   useEffect(() => {
