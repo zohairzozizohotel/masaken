@@ -1,11 +1,13 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Search } from 'lucide-react';
 import Link from 'next/link';
+import GlobalSearch from './GlobalSearch';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,17 +45,35 @@ export default function Header() {
           ))}
         </nav>
 
-        <a 
-          href="https://wa.me/966509996115" 
-          className="hidden md:block px-[24px] py-[10px] border border-primary text-[14px] text-primary hover:bg-accent hover:border-accent hover:text-white transition duration-300"
-        >
-          تواصل عبر واتساب
-        </a>
+        <div className="hidden md:flex items-center gap-4">
+          <button 
+            onClick={() => setIsSearchOpen(true)}
+            className="p-2 text-primary hover:text-accent hover:bg-gray-50 rounded-full transition-all"
+            aria-label="بحث"
+          >
+            <Search size={20} />
+          </button>
+          
+          <a 
+            href="https://wa.me/966509996115" 
+            className="px-[24px] py-[10px] border border-primary text-[14px] text-primary hover:bg-accent hover:border-accent hover:text-white transition duration-300"
+          >
+            تواصل عبر واتساب
+          </a>
+        </div>
 
-        {/* Mobile Menu Button */}
-        <button className="md:hidden text-primary hover:text-accent transition" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-          {isMenuOpen ? <X /> : <Menu />}
-        </button>
+        {/* Mobile Menu Button & Search */}
+        <div className="md:hidden flex items-center gap-4">
+          <button 
+            onClick={() => setIsSearchOpen(true)}
+            className="text-primary hover:text-accent transition p-2"
+          >
+            <Search size={24} />
+          </button>
+          <button className="text-primary hover:text-accent transition" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            {isMenuOpen ? <X /> : <Menu />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
@@ -73,6 +93,8 @@ export default function Header() {
           </div>
         </div>
       )}
+
+      <GlobalSearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </header>
   );
 }
