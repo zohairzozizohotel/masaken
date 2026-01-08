@@ -36,6 +36,7 @@ import {
    const [activeSection, setActiveSection] = useState(null);
    const [selectedUnit, setSelectedUnit] = useState(null);
    const [lightboxIndex, setLightboxIndex] = useState(null);
+  const [mapError, setMapError] = useState(false);
  
    useEffect(() => {
     const fetchData = async () => {
@@ -234,6 +235,12 @@ import {
                 <div className="flex items-center gap-2">
                   <MapPin className="text-accent" size={20} />
                   <span>{project.location || 'الرياض، المملكة العربية السعودية'}</span>
+                  <button 
+                    onClick={() => document.getElementById('map-section')?.scrollIntoView({ behavior: 'smooth' })}
+                    className="bg-white/20 hover:bg-white/30 backdrop-blur-md text-white text-xs px-3 py-1.5 rounded-full transition-all flex items-center gap-1 cursor-pointer"
+                  >
+                    عرض الخريطة
+                  </button>
                 </div>
                 {project.start_date && (
                   <div className="flex items-center gap-2">
@@ -647,15 +654,23 @@ import {
             </div>
 
             {/* Google Map Embed */}
-            <div className="bg-white p-2 rounded-3xl shadow-sm border border-border-light h-[300px] overflow-hidden relative group">
-              <div className="w-full h-full rounded-2xl overflow-hidden relative group-hover:scale-[1.02] transition-transform duration-500">
-                <iframe 
-                    src={getMapEmbedUrl(project.link, project.location)} 
-                    className="w-full h-full" 
-                    loading="lazy" 
-                    referrerPolicy="no-referrer-when-downgrade"
-                    allowFullScreen
-                />
+            <div id="map-section" className="bg-white p-2 rounded-3xl shadow-sm border border-border-light h-[300px] overflow-hidden relative group">
+              <div className="w-full h-full rounded-2xl overflow-hidden relative group-hover:scale-[1.02] transition-transform duration-500 bg-gray-100">
+                {!mapError ? (
+                  <iframe 
+                      src={getMapEmbedUrl(project.link, project.location)} 
+                      className="w-full h-full" 
+                      loading="lazy" 
+                      referrerPolicy="no-referrer-when-downgrade"
+                      allowFullScreen
+                      onError={() => setMapError(true)}
+                  />
+                ) : (
+                  <div className="w-full h-full flex flex-col items-center justify-center bg-gray-50 text-gray-400">
+                    <MapPin size={48} className="mb-2 opacity-50" />
+                    <span className="font-bold text-xl text-gray-500">حي النزهه</span>
+                  </div>
+                )}
                 <div className="absolute inset-0 bg-black/5 pointer-events-none group-hover:bg-transparent transition-colors duration-300" />
               </div>
               
