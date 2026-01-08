@@ -35,7 +35,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="relative w-full h-[450px] rounded-3xl overflow-hidden shadow-2xl border border-gray-100 group">
+          <div className="relative w-full h-[450px] rounded-3xl overflow-hidden group">
             {/* Faded Edges Mask */}
             <div className="absolute inset-0 pointer-events-none z-10" 
                  style={{
