@@ -1,26 +1,32 @@
 'use client';
 import { useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import { Star, Award, TrendingUp, Building2, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { motion, useScroll, useSpring } from 'framer-motion';
+import { Star, Award, TrendingUp, Flag, Target, Lightbulb } from 'lucide-react';
 
 const timelineData = [
   { 
     year: "2010", 
     title: "التأسيس والانطلاق", 
-    description: "تأسيس الشركة في مدينة جدة، وانطلاقة برؤية طموحة في السوق العقاري.", 
-    icon: Star 
+    description: "تأسيس شركة مساكن الرفاهية في جدة، وبدء رحلتنا برؤية طموحة لإعادة تعريف مفهوم السكن الراقي.", 
+    icon: Flag 
   },
   { 
-    year: "2020", 
-    title: "مراحل التطور", 
-    description: "توسع عمليات الشركة ونمو قاعدة العملاء لتشمل قطاعات متنوعة.", 
+    year: "2015", 
+    title: "التوسع والنمو", 
+    description: "توسيع نطاق مشاريعنا ليشمل مناطق جديدة، مع التركيز على الجودة والابتكار في التصميم والتنفيذ.", 
     icon: TrendingUp 
   },
   { 
+    year: "2020", 
+    title: "التحول الرقمي", 
+    description: "إطلاق منصاتنا الرقمية وتطوير خدماتنا لتواكب أحدث التقنيات وتسهيل تجربة العملاء.", 
+    icon: Lightbulb 
+  },
+  { 
     year: "2025", 
-    title: "توسيع المجالات", 
-    description: "إطلاق خدمات جديدة وتوسيع نطاق الأعمال لتشمل حلولاً عقارية وفندقية متكاملة.", 
-    icon: Award 
+    title: "رؤية المستقبل", 
+    description: "إطلاق مشاريع نوعية متكاملة الخدمات، وتوسيع شراكاتنا الاستراتيجية لتحقيق استدامة ونمو طويل الأمد.", 
+    icon: Target 
   },
 ];
 
@@ -28,7 +34,7 @@ export default function Timeline() {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start end", "end center"]
+    offset: ["start center", "end center"]
   });
 
   const scaleY = useSpring(scrollYProgress, {
@@ -38,39 +44,41 @@ export default function Timeline() {
   });
 
   return (
-    <section ref={containerRef} className="py-[150px] bg-gradient-to-b from-white via-[#FAF9F6] to-white relative overflow-hidden">
-      {/* Background Decors - Luxury Touches */}
-      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px] pointer-events-none -translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px] pointer-events-none translate-x-1/2 translate-y-1/2" />
+    <section ref={containerRef} className="py-24 bg-white relative overflow-hidden">
+      {/* Decorative Background */}
+      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gray-100 to-transparent" />
+      <div className="absolute inset-0 pointer-events-none opacity-40">
+        <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
+      </div>
 
       <div className="container-custom relative z-10">
-        <div className="text-center mb-24">
+        <div className="text-center mb-20 max-w-3xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-[32px] md:text-[40px] font-extralight tracking-wide text-primary mb-4">
-              مسيرة <span className="text-accent font-serif font-medium">التميز</span>
+            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
+              مسيرة <span className="text-accent">التميز</span>
             </h2>
-            <div className="w-[60px] h-[2px] bg-accent/50 mx-auto" />
-            <p className="mt-6 text-secondary-text max-w-2xl mx-auto font-light leading-relaxed">
-              محطات مضيئة صنعت تاريخنا وشكلت مستقبلنا في عالم التطوير العقاري وإدارة الأملاك
+            <p className="text-gray-600 text-lg leading-relaxed">
+              محطات مضيئة صنعت تاريخنا وشكلت مستقبلنا في عالم التطوير العقاري.
             </p>
           </motion.div>
         </div>
 
-        <div className="relative max-w-5xl mx-auto">
+        <div className="relative max-w-5xl mx-auto px-4 md:px-0">
           {/* Central Line (Desktop) */}
-          <div className="absolute left-1/2 top-0 bottom-0 w-[2px] bg-gray-100 transform -translate-x-1/2 hidden md:block">
+          <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-0.5 bg-gray-100 transform md:-translate-x-1/2">
             <motion.div 
               style={{ scaleY, transformOrigin: "top" }} 
-              className="w-full h-full bg-gradient-to-b from-transparent via-accent to-transparent shadow-[0_0_15px_rgba(39,122,138,0.6)]" 
+              className="w-full h-full bg-gradient-to-b from-accent/20 via-accent to-accent/20" 
             />
           </div>
 
-          <div className="space-y-24 md:space-y-32">
+          <div className="space-y-12 md:space-y-24">
             {timelineData.map((item, index) => (
               <TimelineItem key={index} item={item} index={index} />
             ))}
@@ -89,46 +97,42 @@ function TimelineItem({ item, index }) {
     <motion.div 
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
-      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.1 }}
+      viewport={{ once: true, margin: "-50px" }}
       className={`relative flex flex-col md:flex-row items-center justify-between ${isEven ? 'md:flex-row-reverse' : ''}`}
     >
       {/* Content Side */}
-      <div className={`w-full md:w-5/12 ${isEven ? 'md:text-right' : 'md:text-left'} text-center z-10`}>
-        <div className="group relative">
-            <div className={`absolute -inset-4 bg-accent/5 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700`} />
-            <div className="relative bg-white p-8 rounded-none border border-border-light/50 shadow-sm hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)] hover:border-accent/30 transition-all duration-500">
-                <span className="text-[60px] leading-none font-thin text-accent/10 absolute top-4 right-4 select-none font-serif">
-                    {item.year}
-                </span>
-                
-                <div className={`inline-flex items-center justify-center w-12 h-12 mb-6 rounded-full bg-accent/5 text-accent group-hover:bg-accent group-hover:text-white transition-colors duration-500 ${isEven ? 'md:ml-auto' : 'md:mr-auto'}`}>
-                    <Icon size={24} strokeWidth={1.5} />
-                </div>
+      <div className={`w-full md:w-[calc(50%-40px)] pl-16 md:pl-0 ${isEven ? 'md:text-right' : 'md:text-left'} text-left`}>
+        <div className="group relative bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:border-accent/20 transition-all duration-500">
+            {/* Year Badge */}
+            <div className={`absolute -top-4 ${isEven ? 'md:right-8' : 'md:left-8'} left-8 bg-accent text-white px-4 py-1 rounded-full text-sm font-bold shadow-lg shadow-accent/20`}>
+                {item.year}
+            </div>
 
-                <h3 className="text-[22px] font-medium text-primary mb-3 group-hover:text-accent transition-colors duration-300">
+            <div className={`flex items-center gap-4 mb-4 ${isEven ? 'md:flex-row-reverse' : 'md:flex-row'}`}>
+                <div className="w-10 h-10 rounded-xl bg-accent/5 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all duration-500">
+                    <Icon size={20} />
+                </div>
+                <h3 className="text-xl font-bold text-primary group-hover:text-accent transition-colors duration-300">
                     {item.title}
                 </h3>
-                <p className="text-secondary-text text-[15px] leading-relaxed">
-                    {item.description}
-                </p>
-                
-                {/* Decorative corner */}
-                <div className={`absolute bottom-0 w-0 h-[2px] bg-accent transition-all duration-700 group-hover:w-full ${isEven ? 'right-0' : 'left-0'}`} />
             </div>
+            
+            <p className="text-gray-600 leading-relaxed text-sm md:text-base">
+                {item.description}
+            </p>
         </div>
       </div>
 
       {/* Center Node */}
-      <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden md:flex justify-center items-center z-20">
-        <div className="w-4 h-4 rounded-full bg-white border-2 border-accent shadow-[0_0_0_4px_rgba(255,255,255,0.8)] relative group cursor-pointer">
-            <div className="absolute inset-0 bg-accent rounded-full animate-ping opacity-20" />
-            <div className="absolute -inset-4 rounded-full border border-accent/20 scale-0 group-hover:scale-100 transition-transform duration-500" />
+      <div className="absolute left-8 md:left-1/2 top-8 md:top-1/2 transform -translate-x-1/2 md:-translate-y-1/2 flex justify-center items-center z-20">
+        <div className="w-4 h-4 rounded-full bg-white border-4 border-gray-100 group-hover:border-accent transition-colors duration-500 relative">
+            <div className="absolute inset-0 bg-accent rounded-full transform scale-0 group-hover:scale-100 transition-transform duration-300" />
         </div>
       </div>
 
-      {/* Empty Side (Spacer) */}
-      <div className="w-full md:w-5/12 hidden md:block" />
+      {/* Spacer for Desktop Layout */}
+      <div className="w-full md:w-[calc(50%-40px)] hidden md:block" />
     </motion.div>
   );
 }
